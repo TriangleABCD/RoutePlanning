@@ -1,9 +1,9 @@
 /**
 * @Name: RoutinePlanning
 * @Version: 1.0
-* @Auther: Wang Yaoyong
+* @Auther: TriangleABCD
 * @Date&Time: 2021-1-1
-* @TODO: ÊäÈëÂ·Ïß,ÅĞ¶ÏÂ·Ïß¿ÉĞĞĞÔ,ÖØĞÂ¹æ»®Â·Ïß,Êä³öĞÂ¹æ»®µÄ¿ÉĞĞÂ·Ïß
+* @TODO: è¾“å…¥è·¯çº¿,åˆ¤æ–­è·¯çº¿å¯è¡Œæ€§,é‡æ–°è§„åˆ’è·¯çº¿,è¾“å‡ºæ–°è§„åˆ’çš„å¯è¡Œè·¯çº¿
 */
 
 #include <iostream>
@@ -14,54 +14,52 @@
 
 using namespace std;
 
-/* ÓÉÓÚ¸öÈËÏ°¹ß,±¾Ô´´úÂë·ç¸ñ¸ü½Ó½ü C ÓïÑÔ,¸ü¶à²ÉÓÃ½á¹¹Ìå¶ø·Ç¶ÔÏó */
-
-struct Po  //µã,´æ´¢Â·ÏßÉÏÃ¿Ò»¸öµãµÄºá×İ×ø±ê
+struct Po  //ç‚¹,å­˜å‚¨è·¯çº¿ä¸Šæ¯ä¸€ä¸ªç‚¹çš„æ¨ªçºµåæ ‡
 {
-    int x;  //ºá×ø±ê,´Ó 0 ¿ªÊ¼
-    int y;  //×İ×ø±ê,´Ó 0 ¿ªÊ¼
+    int x;  //æ¨ªåæ ‡,ä» 0 å¼€å§‹
+    int y;  //çºµåæ ‡,ä» 0 å¼€å§‹
 };
 
-struct MAP  //µØÍ¼,ÓÃÓÚ´æ´¢µØÍ¼»ù±¾ĞÅÏ¢ºÍ×îÖÕÊä³ö
+struct MAP  //åœ°å›¾,ç”¨äºå­˜å‚¨åœ°å›¾åŸºæœ¬ä¿¡æ¯å’Œæœ€ç»ˆè¾“å‡º
 {
-    int m,n;  //µØÍ¼´óĞ¡Îª m*n,ÏÂ±ê´Ó 0 ¿ªÊ¼
+    int m,n;  //åœ°å›¾å¤§å°ä¸º m*n,ä¸‹æ ‡ä» 0 å¼€å§‹
 
-    int x1,y1,x2,y2;  //ÆğµãÖÕµã×ø±ê
+    int x1,y1,x2,y2;  //èµ·ç‚¹ç»ˆç‚¹åæ ‡
 
-    int abstacleNum;  //ÕÏ°­¿éÊıÁ¿
+    int abstacleNum;  //éšœç¢å—æ•°é‡
 
-    int Map[1000][1000];  //¶şÎ¬Êı×é´æ´¢µØÍ¼»ù±¾ĞÅÏ¢
+    int Map[1000][1000];  //äºŒç»´æ•°ç»„å­˜å‚¨åœ°å›¾åŸºæœ¬ä¿¡æ¯
 
-    void setSize(void)  //¶ÁÈëµØÍ¼´óĞ¡
+    void setSize(void)  //è¯»å…¥åœ°å›¾å¤§å°
     {
         int t1,t2;
-        scanf("%dx%d",&t1,&t2);  //ÊäÈë¸ñÊ½Îª mxn ,mºÍnÖ®¼äÓÃ×ÖÄ¸xÁ¬½Ó
-        fflush(stdin);          //Çå¿Õ»º³åÇø
+        scanf("%dx%d",&t1,&t2);  //è¾“å…¥æ ¼å¼ä¸º mxn ,må’Œnä¹‹é—´ç”¨å­—æ¯xè¿æ¥
+        fflush(stdin);          //æ¸…ç©ºç¼“å†²åŒº
         m = t1;
         n = t2;
     }
 
-    void setBE(void)  //¶ÁÈëÆğµãÖÕµã×ø±ê
+    void setBE(void)  //è¯»å…¥èµ·ç‚¹ç»ˆç‚¹åæ ‡
     {
         int t1,t2,t3,t4;
         scanf("[%d,%d]",&t1,&t2);
-        fflush(stdin);  //Çå¿Õ»º³åÇø
+        fflush(stdin);  //æ¸…ç©ºç¼“å†²åŒº
         scanf("[%d,%d]",&t3,&t4);
-        fflush(stdin);  //Çå¿Õ»º³åÇø
+        fflush(stdin);  //æ¸…ç©ºç¼“å†²åŒº
         x1 = t1;
         y1 = t2;
         x2 = t3;
         y2 = t4;
     }
 
-    void initMap(void)  //³õÊ¼»¯µØÍ¼ĞÅÏ¢,È«²¿¹é 0
+    void initMap(void)  //åˆå§‹åŒ–åœ°å›¾ä¿¡æ¯,å…¨éƒ¨å½’ 0
     {
         for(int i = 0; i < m; ++i)
             for(int j = 0; j < n; ++j)
-                Map[i][j] = 0;  //µÀÂ·¼ÇÎª 0
+                Map[i][j] = 0;  //é“è·¯è®°ä¸º 0
     }
 
-    void setAbstacle(void)  //¶ÁÈëÕÏ°­×ø±ê
+    void setAbstacle(void)  //è¯»å…¥éšœç¢åæ ‡
     {
         abstacleNum = 0;
         while(1)
@@ -70,90 +68,90 @@ struct MAP  //µØÍ¼,ÓÃÓÚ´æ´¢µØÍ¼»ù±¾ĞÅÏ¢ºÍ×îÖÕÊä³ö
             char t[20];
             scanf("%s",t);
             fflush(stdin);
-            if(strcmp(t,"$") == 0) //ÒÔ×Ö·û $ ½áÊø
+            if(strcmp(t,"$") == 0) //ä»¥å­—ç¬¦ $ ç»“æŸ
                 break;
             sscanf(t,"[%d,%d]",&t1,&t2);
-            Map[t1][t2] = -1;  // ÕÏ°­Îï¼ÇÎª -1
+            Map[t1][t2] = -1;  // éšœç¢ç‰©è®°ä¸º -1
             ++abstacleNum;
         }
     }
 
-    void print(void)  //´òÓ¡µØÍ¼
+    void print(void)  //æ‰“å°åœ°å›¾
     {
         printf("  ");
         for(int i = 0; i < n; ++i)
-            printf("%d ",i);  //´òÓ¡ºáÏò±íÍ·Êı×Ö
+            printf("%d ",i);  //æ‰“å°æ¨ªå‘è¡¨å¤´æ•°å­—
         printf("\n");
         for(int i = 0; i < m; ++i)
         {
-            printf("%d ",i);  //´òÓ¡×İÏò±íÍ·Êı×Ö
+            printf("%d ",i);  //æ‰“å°çºµå‘è¡¨å¤´æ•°å­—
             for(int j = 0; j < n; ++j)
             {
-                if(i == x1 && j == y1)  //ÆğµãÌØÅĞ
+                if(i == x1 && j == y1)  //èµ·ç‚¹ç‰¹åˆ¤
                 {
                     printf("I ");
                     continue;
                 }
-                if(i == x2 && j == y2)  //ÖÕµãÌØÅĞ
+                if(i == x2 && j == y2)  //ç»ˆç‚¹ç‰¹åˆ¤
                 {
                     printf("G ");
                     continue;
                 }
-                if(Map[i][j] == 0)  //µÀÂ·¾Í´òÓ¡¿Õ¸ñ
+                if(Map[i][j] == 0)  //é“è·¯å°±æ‰“å°ç©ºæ ¼
                     printf("  ");
-                else if(Map[i][j] == 1)  //Â·Ïß¾Í´òÓ¡ *
+                else if(Map[i][j] == 1)  //è·¯çº¿å°±æ‰“å° *
                     printf("* ");
                 else
-                    printf("# ");  //ÕÏ°­¾Í´òÓ¡ #
+                    printf("# ");  //éšœç¢å°±æ‰“å° #
             }
             printf("\n");
         }
     }
 }myMap;
 
-struct Route  //Â·Ïß
+struct Route  //è·¯çº¿
 {
-    int n;  //´æ´¢Â·Ïß³¤¶È
-    struct Po li[2000];  //´æ´¢Â·ÏßÉÏÃ¿¸öµã,´Ó 1 ¿ªÊ¼
+    int n;  //å­˜å‚¨è·¯çº¿é•¿åº¦
+    struct Po li[2000];  //å­˜å‚¨è·¯çº¿ä¸Šæ¯ä¸ªç‚¹,ä» 1 å¼€å§‹
 
-    void initRoute()  //ÊäÈëÂ·Ïß
+    void initRoute()  //è¾“å…¥è·¯çº¿
     {
         n=0;
-        //¿ªÊ¼ÊäÈëÂ·Ïß
+        //å¼€å§‹è¾“å…¥è·¯çº¿
         char t[20];
         while(1)
         {
-            //ÏÈÊäÈëÒ»¸ö×Ö·û´®
+            //å…ˆè¾“å…¥ä¸€ä¸ªå­—ç¬¦ä¸²
             scanf("%s",t);
             fflush(stdin);
-            //ÅĞ¶ÏÊäÈëµÄÒ»ĞĞ°üº¬¼¸¸ö×ø±ê
+            //åˆ¤æ–­è¾“å…¥çš„ä¸€è¡ŒåŒ…å«å‡ ä¸ªåæ ‡
             int tt = 0;
             for(int i = 0; i < strlen(t); ++i)
-                if(t[i] == '[')  //¸ù¾İ×Ö·û '[' ÊıÁ¿ÅĞ¶Ï×ø±ê¸öÊı
+                if(t[i] == '[')  //æ ¹æ®å­—ç¬¦ '[' æ•°é‡åˆ¤æ–­åæ ‡ä¸ªæ•°
                     ++tt;
-            if(tt == 1)  //Ö»ÓĞÒ»¸ö×ø±êµÄÇé¿ö
+            if(tt == 1)  //åªæœ‰ä¸€ä¸ªåæ ‡çš„æƒ…å†µ
             {
                 int t1,t2;
                 sscanf(t,"[%d,%d]",&t1,&t2);
                 li[++n].x = t1;
                 li[n].y = t2;
-                break; //Ö»ÓĞÒ»¸ö×ø±ê,ËµÃ÷ÊäÈë¿Ï¶¨½áÊøÁË
+                break; //åªæœ‰ä¸€ä¸ªåæ ‡,è¯´æ˜è¾“å…¥è‚¯å®šç»“æŸäº†
             }
-            //ÓĞÁ½¸ö×ø±êµÄÇé¿ö
+            //æœ‰ä¸¤ä¸ªåæ ‡çš„æƒ…å†µ
             int t1,t2,t3,t4;
             sscanf(t,"[%d,%d]->[%d,%d]->",&t1,&t2,&t3,&t4);
-            //°ÑÃ¿ĞĞÊäÈëµÄÁ½¸öµãµÄ×ø±ê´æÈëÂ·Ïß
+            //æŠŠæ¯è¡Œè¾“å…¥çš„ä¸¤ä¸ªç‚¹çš„åæ ‡å­˜å…¥è·¯çº¿
             li[++n].x = t1;
             li[n].y = t2;
             li[++n].x = t3;
             li[n].y = t4;
-            //Èç¹ûÊÇÖÕµã,¾Í½áÊøÊäÈë
+            //å¦‚æœæ˜¯ç»ˆç‚¹,å°±ç»“æŸè¾“å…¥
             if(t3 == myMap.x2 && t4 == myMap.y2)
                 break;
         }
     }
 
-    void initRouteinMap()  //°ÑÂ·ÏßĞÅÏ¢´æÈëµØÍ¼Àà
+    void initRouteinMap()  //æŠŠè·¯çº¿ä¿¡æ¯å­˜å…¥åœ°å›¾ç±»
     {
         for(int i = 1; i < n+1; ++i)
         {
@@ -164,21 +162,21 @@ struct Route  //Â·Ïß
         }
     }
 
-    bool judgeInit(void)  //ÅĞ¶ÏÆğµãÊÇ·ñÕıÈ·
+    bool judgeInit(void)  //åˆ¤æ–­èµ·ç‚¹æ˜¯å¦æ­£ç¡®
     {
         if(li[1].x != myMap.x1 || li[1].y != myMap.y1)
             return true;
         return false;
     }
 
-    bool judgeGoal(void)  //ÅĞ¶ÏÖÕµãÊÇ·ñÕıÈ·
+    bool judgeGoal(void)  //åˆ¤æ–­ç»ˆç‚¹æ˜¯å¦æ­£ç¡®
     {
         if(li[n].x != myMap.x2 || li[n].y != myMap.y2)
             return true;
         return false;
     }
 
-    bool judgeFuckinMove(void)  //ÅĞ¶ÏÊÇ·ñÓĞ·Ç·¨ÒÆ¶¯
+    bool judgeFuckinMove(void)  //åˆ¤æ–­æ˜¯å¦æœ‰éæ³•ç§»åŠ¨
     {
         for(int i = 1; i < n; ++i)
         {
@@ -189,7 +187,7 @@ struct Route  //Â·Ïß
         return false;
     }
 
-    bool judgeAbstacle(void)  //ÅĞ¶ÏÂ·ÏßÊÇ·ñ¾­¹ıÕÏ°­¿é
+    bool judgeAbstacle(void)  //åˆ¤æ–­è·¯çº¿æ˜¯å¦ç»è¿‡éšœç¢å—
     {
         for(int i= 1; i < n+1; ++i)
             if(myMap.Map[li[i].x][li[i].y] == -1)
@@ -199,7 +197,7 @@ struct Route  //Â·Ïß
 }route;
 
 
-void Stage0(void)  //´òÓ¡µÚ 0 ½×¶ÎÄÚÈİ
+void Stage0(void)  //æ‰“å°ç¬¬ 0 é˜¶æ®µå†…å®¹
 {
     printf("\n");
     printf("==STAGE 0=======================================\n");
@@ -250,11 +248,11 @@ void Stage0(void)  //´òÓ¡µÚ 0 ½×¶ÎÄÚÈİ
         printf("The route is valid!\n");
 }
 
-//Éî¶ÈÓÅÏÈËÑË÷Ëã·¨Ñ°Â·
-bool flag = false;  //ÓÃÓÚÅĞ¶ÏÊÇ·ñ½áÊøÉîËÑµİ¹é
-bool b[1000][1000];  //½«×ß²»Í¨µÄµã±ê¼Ç
+//æ·±åº¦ä¼˜å…ˆæœç´¢ç®—æ³•å¯»è·¯
+bool flag = false;  //ç”¨äºåˆ¤æ–­æ˜¯å¦ç»“æŸæ·±æœé€’å½’
+bool b[1000][1000];  //å°†èµ°ä¸é€šçš„ç‚¹æ ‡è®°
 
-void dfs(int n,int x,int y,int x0,int y0) //·Ö±ğ±íÊ¾:Ñ°Â·ÆğµãĞòºÅ¡¢µ±Ç°µãºá×İ×ø±ê¡¢ÖÕµãºá×İ×ø±ê
+void dfs(int n,int x,int y,int x0,int y0) //åˆ†åˆ«è¡¨ç¤º:å¯»è·¯èµ·ç‚¹åºå·ã€å½“å‰ç‚¹æ¨ªçºµåæ ‡ã€ç»ˆç‚¹æ¨ªçºµåæ ‡
 {
     if(flag)
         return;
@@ -266,14 +264,14 @@ void dfs(int n,int x,int y,int x0,int y0) //·Ö±ğ±íÊ¾:Ñ°Â·ÆğµãĞòºÅ¡¢µ±Ç°µãºá×İ×ø±
     route.li[n].y = y;
     b[x][y] = false;
 
-    //Èç¹û×ßµ½ÖÕµãÁË,½áÊøÑ°Â·
+    //å¦‚æœèµ°åˆ°ç»ˆç‚¹äº†,ç»“æŸå¯»è·¯
     if(x == x0 && y == y0)
     {
         flag = true;
         return;
     }
 
-    //ÏòÏÂ×ß
+    //å‘ä¸‹èµ°
     if(myMap.Map[x+1][y] != -1 && x+1 < myMap.m && b[x+1][y])
     {
         //cout<<n<<"\tDown in\n";
@@ -282,7 +280,7 @@ void dfs(int n,int x,int y,int x0,int y0) //·Ö±ğ±íÊ¾:Ñ°Â·ÆğµãĞòºÅ¡¢µ±Ç°µãºá×İ×ø±
         if(flag)
             return;
     }
-    //Ïò×ó×ß
+    //å‘å·¦èµ°
     if(myMap.Map[x][y-1] != -1 && y-1 >= 0 && b[x][y-1])
     {
         //cout<<n<<"\tLeft in\n";
@@ -291,7 +289,7 @@ void dfs(int n,int x,int y,int x0,int y0) //·Ö±ğ±íÊ¾:Ñ°Â·ÆğµãĞòºÅ¡¢µ±Ç°µãºá×İ×ø±
         if(flag)
             return;
     }
-    //ÏòÓÒ×ß
+    //å‘å³èµ°
     if(myMap.Map[x][y+1] != -1 && y+1 < myMap.n && b[x][y+1])
     {
         //cout<<n<<"\tRight in\n";
@@ -300,7 +298,7 @@ void dfs(int n,int x,int y,int x0,int y0) //·Ö±ğ±íÊ¾:Ñ°Â·ÆğµãĞòºÅ¡¢µ±Ç°µãºá×İ×ø±
         if(flag)
             return;
     }
-    //ÏòÉÏ×ß
+    //å‘ä¸Šèµ°
     if(myMap.Map[x-1][y] != -1 && x-1 >= 0 && b[x-1][y])
     {
         //cout<<n<<"\tUp in\n";
@@ -315,42 +313,42 @@ void dfs(int n,int x,int y,int x0,int y0) //·Ö±ğ±íÊ¾:Ñ°Â·ÆğµãĞòºÅ¡¢µ±Ç°µãºá×İ×ø±
     return;
 }
 
-void Corection(void)  //ĞŞ¸´Â·Ïß
+void Corection(void)  //ä¿®å¤è·¯çº¿
 {
-    //È·¶¨Ñ°Â·ÆğµãºÍÖÕµã
+    //ç¡®å®šå¯»è·¯èµ·ç‚¹å’Œç»ˆç‚¹
     int beg;
     int beg_x,beg_y;
-    //Ô­À´µÄÖÕµãÎªÑ°Â·ÖÕµã
+    //åŸæ¥çš„ç»ˆç‚¹ä¸ºå¯»è·¯ç»ˆç‚¹
     int end_x = myMap.x2, end_y = myMap.y2;
     for(int i= 1; i < route.n+1; ++i)
     {
         int x = route.li[i].x;
         int y = route.li[i].y;
         if(myMap.Map[x-1][y] == -1 || myMap.Map[x+1][y] == -1
-           || myMap.Map[x][y-1] == -1 || myMap.Map[x][y+1] == -1)  //µÚÒ»¸öÓöÕÏÂ·ÏßµãµÄÇ°Ò»¸öµãÎªÑ°Â·Æğµã
+           || myMap.Map[x][y-1] == -1 || myMap.Map[x][y+1] == -1)  //ç¬¬ä¸€ä¸ªé‡éšœè·¯çº¿ç‚¹çš„å‰ä¸€ä¸ªç‚¹ä¸ºå¯»è·¯èµ·ç‚¹
         {
-            beg = i;  //Ñ°Â·ÆğµãµÄĞòºÅ
+            beg = i;  //å¯»è·¯èµ·ç‚¹çš„åºå·
             beg_x = route.li[i].x;
             beg_y = route.li[i].y;
             break;
         }
     }
-    //Ñ°Â·Ô¤´¦Àí
-    for(int i = beg; i < 2000; ++i)//Ñ°Â·ÆğµãºÍÑ°Â·ÖÕµãÖ®¼äµÄÔ­±¾µÄµãÈ«²¿×÷·Ï
+    //å¯»è·¯é¢„å¤„ç†
+    for(int i = beg; i < 2000; ++i)//å¯»è·¯èµ·ç‚¹å’Œå¯»è·¯ç»ˆç‚¹ä¹‹é—´çš„åŸæœ¬çš„ç‚¹å…¨éƒ¨ä½œåºŸ
     {
         route.li[i].x = -1;
         route.li[i].y = -1;
     }
-    //Ä¬ÈÏËùÓĞµÄµã¶¼¿É×ß
+    //é»˜è®¤æ‰€æœ‰çš„ç‚¹éƒ½å¯èµ°
     for(int i = 0; i < myMap.m; ++i)
         for(int j = 0; j < myMap.n; ++j)
             b[i][j] = true;
-    //ÒÑ¾­×ß¹ıµÄÂ·²»¿ÉÔ­Â··µ»Ø
+    //å·²ç»èµ°è¿‡çš„è·¯ä¸å¯åŸè·¯è¿”å›
     for(int i = 1; i < beg; ++i)
         b[route.li[i].x][route.li[i].y]=false;
-    //¿ªÊ¼Ñ°Â·
+    //å¼€å§‹å¯»è·¯
     dfs(beg,beg_x,beg_y,end_x,end_y);
-    //ÖØĞÂÈ·ÈÏÂ·Ïß³¤¶È
+    //é‡æ–°ç¡®è®¤è·¯çº¿é•¿åº¦
     int sum=0;
     for(int i = 1;; ++i)
     {
@@ -361,7 +359,7 @@ void Corection(void)  //ĞŞ¸´Â·Ïß
     route.n = sum;
 }
 
-void Stage1(void)  //´òÓ¡µÚ 1 ½×¶ÎÄÚÈİ
+void Stage1(void)  //æ‰“å°ç¬¬ 1 é˜¶æ®µå†…å®¹
 {
     printf("\n");
     printf("==STAGE 1=======================================\n\n");
@@ -369,8 +367,8 @@ void Stage1(void)  //´òÓ¡µÚ 1 ½×¶ÎÄÚÈİ
     if(!route.judgeAbstacle())
         return;
     printf("\n------------------------------------------------\n\n");
-    Corection();  //ĞŞ¸´Â·Ïß
-    //Êä³öĞÂÂ·Ïß
+    Corection();  //ä¿®å¤è·¯çº¿
+    //è¾“å‡ºæ–°è·¯çº¿
     for(int i = 0; i < myMap.m; ++i)
         for(int j = 0; j <myMap.n; ++j)
             if(myMap.Map[i][j] == 1)
@@ -382,15 +380,15 @@ void Stage1(void)  //´òÓ¡µÚ 1 ½×¶ÎÄÚÈİ
 int main()
 {
     system("color 4e");
-    myMap.setSize();  //ÊäÈëµØÍ¼´óĞ¡
-    myMap.initMap();  //³õÊ¼»¯µØÍ¼ĞÅÏ¢
-    myMap.setBE();  //ÊäÈëÆğµãºÍÖÕµã
-    myMap.setAbstacle();  //ÊäÈëÕÏ°­¿é
-    route.initRoute();  //ÊäÈë³õÊ¼Â·¾¶
-    route.initRouteinMap();  //°Ñ³õÊ¼Â·¾¶µÄĞÅÏ¢´æÈëµØÍ¼
-    Stage0();  //µÚ 0 ½×¶ÎÊä³ö
-    Stage1();  //µÚ 1 ½×¶ÎÊä³ö
-    //³ÌĞò½áÊø
+    myMap.setSize();  //è¾“å…¥åœ°å›¾å¤§å°
+    myMap.initMap();  //åˆå§‹åŒ–åœ°å›¾ä¿¡æ¯
+    myMap.setBE();  //è¾“å…¥èµ·ç‚¹å’Œç»ˆç‚¹
+    myMap.setAbstacle();  //è¾“å…¥éšœç¢å—
+    route.initRoute();  //è¾“å…¥åˆå§‹è·¯å¾„
+    route.initRouteinMap();  //æŠŠåˆå§‹è·¯å¾„çš„ä¿¡æ¯å­˜å…¥åœ°å›¾
+    Stage0();  //ç¬¬ 0 é˜¶æ®µè¾“å‡º
+    Stage1();  //ç¬¬ 1 é˜¶æ®µè¾“å‡º
+    //ç¨‹åºç»“æŸ
     system("pause");
     return 0;
 }
