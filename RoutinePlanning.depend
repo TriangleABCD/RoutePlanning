@@ -1,8 +1,0 @@
-# depslib dependency file v1.0
-1610024574 source:d:\files\project\c,c++\routineplanning\main.cpp
-	<iostream>
-	<cstdio>
-	<cstring>
-	<cmath>
-	<windows.h>
-
